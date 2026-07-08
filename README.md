@@ -1,10 +1,26 @@
 # Frontend Quest
 
-Frontend Quest is an RPG training app for preparing for frontend technical interviews. The project combines a pixel cyberpunk game interface with structured Vue, Nuxt, and frontend ecosystem learning content.
+Frontend Quest — RPG-тренажёр для подготовки к техническим собеседованиям по Frontend. Проект соединяет игровой интерфейс в стиле pixel cyberpunk и структурированные учебные материалы по Vue, Nuxt и frontend-экосистеме.
 
-Status: **v0.2 Alpha**
+Статус: **v0.2 Alpha**
 
-## Stack
+## О проекте
+
+Frontend Quest помогает повторять технические темы через миссии, квизы и карточки знаний. Игрок проходит миры, открывает локации, отвечает на вопросы и собирает достижения, а после ответов получает короткие учебные конспекты для подготовки к интервью.
+
+Проект полностью бесплатный и open-source. В нём нет монетизации, paywall, F2P-механик и искусственных ограничений обучения. Монеты используются только как мягкая игровая награда, а энергия остаётся визуальным RPG-показателем и не ограничивает доступ к материалам.
+
+## Основные возможности
+
+- Терминал героя с профилем, уровнем, XP, монетами, энергией и достижениями.
+- Карта миров со структурой мир -> локация -> миссия.
+- Система квизов с проверкой ответов и повторным прохождением миссий.
+- Карточки знаний с техническими объяснениями и примерами кода.
+- Подсветка синтаксиса в примерах через Shiki.
+- Система достижений за прогресс, точность и учебную активность.
+- Локальное сохранение прогресса в браузере.
+
+## Технологический стек
 
 - Vue 3
 - TypeScript
@@ -14,49 +30,55 @@ Status: **v0.2 Alpha**
 - Tailwind CSS
 - Shiki
 
-## Features
+## Структура проекта
 
-- Hero Terminal character panel
-- World Map
-- World -> Location -> Mission progression
-- Quiz Engine
-- Knowledge Cards
-- Achievements
-- Syntax Highlighting
-- Local Progress
+```text
+src/
+  app/              базовая настройка приложения
+  assets/           стили, изображения и звуковые ресурсы
+  components/       переиспользуемые UI, layout, map и quiz-компоненты
+  composables/      Composition API composables
+  content/          учебные модули, вопросы и карточки знаний
+  data/             игровые данные и адаптеры
+  features/         крупные функциональные части
+  router/           маршруты приложения
+  stores/           Pinia stores
+  types/            TypeScript-типы
+  utils/            вспомогательные функции
+  views/            страницы Vue Router
+```
 
-## Project Principles
-
-Frontend Quest is a fully free open-source project.
-
-The project has:
-
-- no monetization;
-- no paywall;
-- no F2P mechanics;
-- no artificial learning limits.
-
-Coins are used only as a soft game reward. Energy is a visual RPG stat and does not limit access to learning.
-
-## Getting Started
+## Запуск проекта
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Build
+## Сборка проекта
 
 ```bash
 npm run build
 ```
 
-## Preview Production Build
+Для локальной проверки production-сборки:
 
 ```bash
 npm run preview
 ```
 
-## Release
+## Roadmap
 
-Current release target: **v0.2 Alpha**.
+Ближайшая цель — стабилизировать v0.2 Alpha и подготовить проект к публичной демонстрации.
+
+Дальше планируется развивать:
+
+- новые учебные миры;
+- книгу знаний;
+- поиск по карточкам;
+- дополнительные режимы практики;
+- расширенную персонализацию героя.
+
+## Лицензия
+
+Проект распространяется под лицензией MIT.

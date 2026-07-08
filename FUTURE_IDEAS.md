@@ -1,12 +1,12 @@
-# Future Ideas
+# Идеи для будущих версий
 
-These ideas are candidates for versions after v1.0. They are not part of the v0.2 Alpha release scope.
+Этот список относится к идеям после v1.0. Они не входят в объём релиза v0.2 Alpha и не являются обещанием конкретных сроков.
 
-- Pixel Pet
-- Avatar Creator
-- Daily Challenges
-- Boss Interview
-- Knowledge Book
-- Search
-- Export
-- More Worlds
+- Pixel Pet — небольшой игровой спутник, который реагирует на прогресс обучения.
+- Avatar Creator — настройка внешнего вида героя.
+- Daily Challenges — ежедневные задания для короткой практики.
+- Boss Interview — режим финального собеседования по выбранной теме.
+- Knowledge Book — личная библиотека открытых карточек знаний.
+- Search — поиск по вопросам, карточкам и темам.
+- Export — экспорт конспектов и прогресса.
+- More Worlds — новые миры с дополнительными frontend-темами.
