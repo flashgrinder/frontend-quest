@@ -16,9 +16,23 @@ export class Playlist {
     return this.tracks[0]
   }
 
+  getTrackById(trackId: string): AudioTrack | undefined {
+    return this.tracks.find((track) => track.id === trackId)
+  }
+
+  rememberTrack(trackId: string): void {
+    this.previousTrackId = trackId
+  }
+
   getRandomTrack(): AudioTrack | undefined {
     if (this.tracks.length <= 1) {
-      return this.tracks[0]
+      const onlyTrack = this.tracks[0]
+
+      if (onlyTrack) {
+        this.previousTrackId = onlyTrack.id
+      }
+
+      return onlyTrack
     }
 
     const candidates = this.tracks.filter((track) => track.id !== this.previousTrackId)

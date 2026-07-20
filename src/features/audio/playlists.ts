@@ -1,5 +1,7 @@
 import type { AudioTrack } from './types'
 
+export const PRIORITY_MUSIC_TRACK_ID = 'theme-main'
+
 const musicModules = import.meta.glob<string>('/src/assets/audio/music/*.{mp3,ogg,wav}', {
   eager: true,
   query: '?url',

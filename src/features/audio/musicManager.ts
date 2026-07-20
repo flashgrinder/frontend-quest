@@ -1,6 +1,7 @@
 import { Playlist } from './playlist'
-import { mainMusicPlaylist } from './playlists'
+import { PRIORITY_MUSIC_TRACK_ID, mainMusicPlaylist } from './playlists'
 import { MusicPlayer } from './musicPlayer'
+import type { AudioTrack } from './types'
 
 const MUSIC_FADE_IN_MS = 900
 const MUSIC_FADE_OUT_MS = 400
@@ -40,7 +41,7 @@ export class MusicManager {
     }
 
     if (!this.started) {
-      const track = this.playlist.getRandomTrack()
+      const track = this.getInitialTrack()
 
       if (!track) {
         return
@@ -136,6 +137,17 @@ export class MusicManager {
   private readonly handleFirstInteraction = (): void => {
     this.removeInteractionListeners()
     this.start()
+  }
+
+  private getInitialTrack(): AudioTrack | undefined {
+    const priorityTrack = this.playlist.getTrackById(PRIORITY_MUSIC_TRACK_ID)
+
+    if (priorityTrack) {
+      this.playlist.rememberTrack(priorityTrack.id)
+      return priorityTrack
+    }
+
+    return this.playlist.getRandomTrack()
   }
 
   private getTargetVolume(): number {
