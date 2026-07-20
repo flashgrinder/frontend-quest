@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AchievementsView from '../views/AchievementsView.vue'
+import CharacterCreationView from '../views/CharacterCreationView.vue'
 import LevelView from '../views/LevelView.vue'
 import LocationView from '../views/LocationView.vue'
 import MapView from '../views/MapView.vue'
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/settings',
       name: 'settings',
       component: SettingsView,
+    },
+    {
+      path: '/character-creation',
+      name: 'character-creation',
+      component: CharacterCreationView,
     },
   ],
 })

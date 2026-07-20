@@ -1,1 +1,1 @@
-export {}
+export { avatarPresets, defaultAvatar, getAvatarById } from './avatarGallery'
