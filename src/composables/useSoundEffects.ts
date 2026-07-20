@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { useGameStore } from '../stores/game'
+import { useSettingsStore } from '../stores/settings'
 
 type OscillatorWave = OscillatorType
 
@@ -37,7 +37,7 @@ const resumeAudioContext = async (context: AudioContext): Promise<boolean> => {
   }
 }
 
-const playTone = async (step: ToneStep, startTime: number): Promise<void> => {
+const playTone = async (step: ToneStep, startTime: number, volume: number): Promise<void> => {
   const context = getAudioContext()
 
   if (!context || !(await resumeAudioContext(context))) {
@@ -47,7 +47,8 @@ const playTone = async (step: ToneStep, startTime: number): Promise<void> => {
   const oscillator = context.createOscillator()
   const gain = context.createGain()
   const duration = Math.max(0.03, step.duration)
-  const safeGain = Math.min(0.12, Math.max(0.01, step.gain ?? 0.05))
+  const volumeRatio = Math.min(1, Math.max(0, volume / 100))
+  const safeGain = Math.min(0.12, Math.max(0.01, step.gain ?? 0.05)) * volumeRatio
 
   oscillator.type = step.type ?? 'sine'
   oscillator.frequency.setValueAtTime(step.frequency, startTime)
@@ -63,7 +64,7 @@ const playTone = async (step: ToneStep, startTime: number): Promise<void> => {
   oscillator.stop(startTime + duration + 0.01)
 }
 
-const playSequence = async (steps: ToneStep[]): Promise<void> => {
+const playSequence = async (steps: ToneStep[], volume: number): Promise<void> => {
   const context = getAudioContext()
 
   if (!context || !(await resumeAudioContext(context))) {
@@ -73,22 +74,22 @@ const playSequence = async (steps: ToneStep[]): Promise<void> => {
   let startTime = context.currentTime
 
   steps.forEach((step) => {
-    void playTone(step, startTime)
+    void playTone(step, startTime, volume)
     startTime += step.duration * 0.82
   })
 }
 
 export const useSoundEffects = () => {
-  const gameStore = useGameStore()
+  const settingsStore = useSettingsStore()
 
-  const isSoundEnabled = computed(() => gameStore.soundEnabled)
+  const isSoundEnabled = computed(() => settingsStore.audio.soundEffectsEnabled)
 
   const playIfEnabled = (steps: ToneStep[]): void => {
-    if (!gameStore.soundEnabled) {
+    if (!settingsStore.audio.soundEffectsEnabled || settingsStore.audio.soundEffectsVolume <= 0) {
       return
     }
 
-    void playSequence(steps)
+    void playSequence(steps, settingsStore.audio.soundEffectsVolume)
   }
 
   const playClick = (): void => {
@@ -129,11 +130,11 @@ export const useSoundEffects = () => {
   }
 
   const setSoundEnabled = (value: boolean): void => {
-    gameStore.setSoundEnabled(value)
+    settingsStore.setSoundEffectsEnabled(value)
   }
 
   const toggleSound = (): void => {
-    gameStore.toggleSound()
+    settingsStore.toggleSoundEffects()
   }
 
   return {

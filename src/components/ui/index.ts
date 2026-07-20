@@ -1,4 +1,6 @@
 export { default as BaseBadge } from './BaseBadge.vue'
 export { default as BaseButton } from './BaseButton.vue'
 export { default as BaseCard } from './BaseCard.vue'
+export { default as BasePixelSwitch } from './BasePixelSwitch.vue'
 export { default as BaseProgress } from './BaseProgress.vue'
+export { default as BaseVolumeSlider } from './BaseVolumeSlider.vue'
