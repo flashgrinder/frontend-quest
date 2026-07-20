@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frontend Quest</title>
+    <script>
+      const basePath = '/frontend-quest'
+      const routePath = window.location.pathname.startsWith(basePath)
+        ? window.location.pathname.slice(basePath.length)
+        : window.location.pathname
+      const route = `${routePath || '/'}${window.location.search}${window.location.hash}`
+
+      window.sessionStorage.setItem('frontend-quest:redirect', route)
+      window.location.replace(`${basePath}/`)
+    </script>
+  </head>
+  <body></body>
+</html>

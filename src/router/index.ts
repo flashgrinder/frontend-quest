@@ -8,7 +8,7 @@ import ProfileView from '../views/ProfileView.vue'
 import SettingsView from '../views/SettingsView.vue'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -47,5 +47,14 @@ const router = createRouter({
     },
   ],
 })
+
+if (typeof window !== 'undefined') {
+  const redirectRoute = window.sessionStorage.getItem('frontend-quest:redirect')
+
+  if (redirectRoute) {
+    window.sessionStorage.removeItem('frontend-quest:redirect')
+    void router.replace(redirectRoute)
+  }
+}
 
 export default router
