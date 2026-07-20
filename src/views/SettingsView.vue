@@ -26,7 +26,7 @@ const settingsStore = useSettingsStore()
             </div>
 
             <p class="mt-2 max-w-xl text-sm leading-6 text-slate-300">
-              Подготовка интерфейса для будущей фоновой музыки и атмосферных synthwave-тем.
+              Фоновая музыка приложения.
             </p>
           </div>
 
@@ -54,7 +54,7 @@ const settingsStore = useSettingsStore()
             </div>
 
             <p class="mt-2 max-w-xl text-sm leading-6 text-slate-300">
-              Киберпанк-звуки при кликах, выборе ответов, закрытых миссиях и завершении уровней.
+              Звуки интерфейса, ответов и игровых событий.
             </p>
           </div>
 

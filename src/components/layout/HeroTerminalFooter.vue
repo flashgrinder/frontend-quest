@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { APP_BUILD_LABEL, APP_VERSION_LABEL } from '../../config/version'
+</script>
 
 <template>
   <footer class="overflow-hidden bg-black/70 px-3 py-2">
@@ -7,8 +9,8 @@
         <span class="size-1.5 bg-[var(--color-neon-green)] shadow-[0_0_10px_rgba(0,255,177,0.9)]"></span>
         ONLINE
       </span>
-      <span class="truncate text-center">v0.1 Alpha</span>
-      <span>Build 0001</span>
+      <span class="truncate text-center">{{ APP_VERSION_LABEL }}</span>
+      <span>Build {{ APP_BUILD_LABEL }}</span>
     </div>
   </footer>
 </template>

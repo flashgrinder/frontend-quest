@@ -2,6 +2,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { BaseBadge, BaseCard, BaseProgress } from '../components/ui'
+import { APP_RELEASE_LABEL } from '../config/version'
 import { locations } from '../data/locations'
 import { missions } from '../data/missions'
 import { worlds } from '../data/worlds'
@@ -124,7 +125,7 @@ onUnmounted(() => {
   <section ref="mapRoot" class="grid scroll-mt-6 gap-8">
     <header class="grid gap-5">
       <div>
-        <p class="font-mono text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-neon-green)]">Release v0.2 Alpha</p>
+        <p class="font-mono text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-neon-green)]">{{ APP_RELEASE_LABEL }}</p>
         <h1 class="pixel-title mt-3 text-3xl text-slate-50 md:text-4xl">World Map</h1>
       </div>
     </header>

@@ -1,83 +1,7 @@
 import { computed } from 'vue'
+import { audioManager } from '../features/audio'
 import { useSettingsStore } from '../stores/settings'
-
-type OscillatorWave = OscillatorType
-
-interface ToneStep {
-  frequency: number
-  duration: number
-  type?: OscillatorWave
-  gain?: number
-}
-
-let audioContext: AudioContext | undefined
-
-const getAudioContext = (): AudioContext | undefined => {
-  if (typeof window === 'undefined' || !window.AudioContext) {
-    return undefined
-  }
-
-  if (!audioContext) {
-    audioContext = new window.AudioContext()
-  }
-
-  return audioContext
-}
-
-const resumeAudioContext = async (context: AudioContext): Promise<boolean> => {
-  if (context.state !== 'suspended') {
-    return true
-  }
-
-  try {
-    await context.resume()
-    return true
-  } catch {
-    return false
-  }
-}
-
-const playTone = async (step: ToneStep, startTime: number, volume: number): Promise<void> => {
-  const context = getAudioContext()
-
-  if (!context || !(await resumeAudioContext(context))) {
-    return
-  }
-
-  const oscillator = context.createOscillator()
-  const gain = context.createGain()
-  const duration = Math.max(0.03, step.duration)
-  const volumeRatio = Math.min(1, Math.max(0, volume / 100))
-  const safeGain = Math.min(0.12, Math.max(0.01, step.gain ?? 0.05)) * volumeRatio
-
-  oscillator.type = step.type ?? 'sine'
-  oscillator.frequency.setValueAtTime(step.frequency, startTime)
-  oscillator.frequency.exponentialRampToValueAtTime(Math.max(40, step.frequency * 1.08), startTime + duration)
-
-  gain.gain.setValueAtTime(0.0001, startTime)
-  gain.gain.exponentialRampToValueAtTime(safeGain, startTime + 0.01)
-  gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration)
-
-  oscillator.connect(gain)
-  gain.connect(context.destination)
-  oscillator.start(startTime)
-  oscillator.stop(startTime + duration + 0.01)
-}
-
-const playSequence = async (steps: ToneStep[], volume: number): Promise<void> => {
-  const context = getAudioContext()
-
-  if (!context || !(await resumeAudioContext(context))) {
-    return
-  }
-
-  let startTime = context.currentTime
-
-  steps.forEach((step) => {
-    void playTone(step, startTime, volume)
-    startTime += step.duration * 0.82
-  })
-}
+import type { ToneStep } from '../features/audio/audioManager'
 
 export const useSoundEffects = () => {
   const settingsStore = useSettingsStore()
@@ -85,11 +9,7 @@ export const useSoundEffects = () => {
   const isSoundEnabled = computed(() => settingsStore.audio.soundEffectsEnabled)
 
   const playIfEnabled = (steps: ToneStep[]): void => {
-    if (!settingsStore.audio.soundEffectsEnabled || settingsStore.audio.soundEffectsVolume <= 0) {
-      return
-    }
-
-    void playSequence(steps, settingsStore.audio.soundEffectsVolume)
+    audioManager.playSoundEffect(steps)
   }
 
   const playClick = (): void => {

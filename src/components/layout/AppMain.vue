@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { APP_RELEASE_LABEL } from '../../config/version'
 import { BaseCard } from '../ui'
 </script>
 
@@ -15,7 +16,7 @@ import { BaseCard } from '../ui'
 
         <div class="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[0.12em] text-[var(--color-muted)]">
           <span class="size-2 bg-[var(--color-neon-green)] shadow-[0_0_12px_rgba(0,255,177,0.8)]"></span>
-          Active Session
+          {{ APP_RELEASE_LABEL }}
         </div>
       </div>
 

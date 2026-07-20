@@ -15,11 +15,12 @@ const emit = defineEmits<{
   'update:modelValue': [value: number]
 }>()
 
-const safeValue = computed(() => Math.min(100, Math.max(0, Math.round(props.modelValue))))
+const safeValue = computed(() => Math.min(1, Math.max(0, props.modelValue)))
+const safePercent = computed(() => Math.round(safeValue.value * 100))
 
 const handleInput = (event: Event): void => {
   if (event.target instanceof HTMLInputElement) {
-    emit('update:modelValue', Number(event.target.value))
+    emit('update:modelValue', Number(event.target.value) / 100)
   }
 }
 </script>
@@ -28,7 +29,7 @@ const handleInput = (event: Event): void => {
   <label class="volume-slider" :class="{ 'volume-slider--disabled': disabled }">
     <span class="volume-slider__header">
       <span>{{ label }}</span>
-      <span>{{ safeValue }}%</span>
+      <span>{{ safePercent }}%</span>
     </span>
 
     <input
@@ -36,11 +37,11 @@ const handleInput = (event: Event): void => {
       min="0"
       max="100"
       step="1"
-      :value="safeValue"
+      :value="safePercent"
       :disabled="disabled"
       :aria-label="label"
       class="volume-slider__input"
-      :style="{ '--volume-value': `${safeValue}%` }"
+      :style="{ '--volume-value': `${safePercent}%` }"
       @input="handleInput"
     >
   </label>
