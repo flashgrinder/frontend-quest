@@ -1,9 +1,9 @@
 import type { QuestionDifficulty } from '../types/content'
 import type { Level, LevelDifficulty } from '../types/level'
 import { missions, getNextMissionInLocation, getNextLocation, getFirstMissionId } from './missions'
-import { vueModules } from '../content/vue'
+import { contentModules } from '../content'
 
-const vueModuleIds = new Set(vueModules.map((module) => module.id))
+const contentModuleIds = new Set(contentModules.map((module) => module.id))
 
 export const legacyLevelIdByModuleId: Record<string, string> = {
   'vue-basics': 'vue-basics-1',
@@ -35,12 +35,12 @@ const difficultyByContentDifficulty: Record<QuestionDifficulty, LevelDifficulty>
   Senior: 'boss',
 }
 
-const moduleDifficultyById = Object.fromEntries(vueModules.map((module) => [module.id, module.difficulty]))
+const moduleDifficultyById = Object.fromEntries(contentModules.map((module) => [module.id, module.difficulty]))
 
 export const normalizeLevelId = (levelId: string): string => {
   const normalizedLevelId = moduleIdByLegacyLevelId[levelId] ?? levelId
 
-  return vueModuleIds.has(normalizedLevelId) ? normalizedLevelId : levelId
+  return contentModuleIds.has(normalizedLevelId) ? normalizedLevelId : levelId
 }
 
 export const levels: Level[] = [...missions]

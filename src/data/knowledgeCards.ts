@@ -1,4 +1,4 @@
-import { vueKnowledgeCards } from '../content/vue'
+import { contentKnowledgeCards } from '../content'
 import type { KnowledgeCard } from '../types/knowledge'
 
-export const knowledgeCards: KnowledgeCard[] = vueKnowledgeCards
+export const knowledgeCards: KnowledgeCard[] = contentKnowledgeCards

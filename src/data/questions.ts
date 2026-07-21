@@ -1,4 +1,4 @@
-import { vueQuestions } from '../content/vue'
+import { contentQuestions } from '../content'
 import type { Question, QuestionDifficulty } from '../types/question'
 import type { ContentQuestion, QuestionDifficulty as ContentQuestionDifficulty } from '../types/content'
 
@@ -20,4 +20,4 @@ const toLegacyQuestion = (question: ContentQuestion): Question => ({
   difficulty: legacyDifficultyByContentDifficulty[question.difficulty],
 })
 
-export const questions: Question[] = vueQuestions.map(toLegacyQuestion)
+export const questions: Question[] = contentQuestions.map(toLegacyQuestion)

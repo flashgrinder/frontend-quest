@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "check:encoding": "node scripts/check-encoding.mjs",
+    "check:content": "node scripts/check-content.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -34,11 +34,11 @@ const createDefaultPlayer = (): Player => ({
   energy: 10,
   maxEnergy: 10,
   completedLevels: [],
-  unlockedLevels: ['vue-basics'],
+  unlockedLevels: ['html-document-gate-basics', 'vue-basics'],
   completedMissions: [],
-  unlockedMissions: ['vue-basics'],
+  unlockedMissions: ['html-document-gate-basics', 'vue-basics'],
   completedLocations: [],
-  unlockedLocations: ['vue-city'],
+  unlockedLocations: ['html-academy', 'vue-city'],
   achievements: [],
   unlockedAchievements: [],
   openedKnowledgeCards: [],
@@ -111,6 +111,9 @@ export const useGameStore = defineStore('game', () => {
 
   addUniqueItem(player.value.unlockedLevels, 'vue-basics')
   addUniqueItem(player.value.unlockedMissions, 'vue-basics')
+  addUniqueItem(player.value.unlockedLevels, 'html-document-gate-basics')
+  addUniqueItem(player.value.unlockedMissions, 'html-document-gate-basics')
+  addUniqueItem(player.value.unlockedLocations, 'html-academy')
   addUniqueItem(player.value.unlockedLocations, 'vue-city')
 
   player.value.completedLevels = normalizeProgressList([...player.value.completedLevels, ...player.value.completedMissions])

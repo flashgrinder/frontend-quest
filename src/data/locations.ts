@@ -1,3 +1,4 @@
+import { webFoundationsModules } from '../content'
 import type { Location } from '../types/location'
 
 export const locations: Location[] = [
@@ -11,7 +12,7 @@ export const locations: Location[] = [
     difficulty: 'Foundation',
     futureProgress: 'Будущие миссии: семантика, формы, доступность, SEO-основа и структура документа.',
     order: 1,
-    missionIds: [],
+    missionIds: webFoundationsModules.map((module) => module.id),
     status: 'current',
     accentColor: '#FFD84D',
     icon: 'HTML',

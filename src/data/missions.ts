@@ -1,8 +1,9 @@
-import { vueModules } from '../content/vue'
+import { contentModules, webFoundationsModules } from '../content'
 import type { Mission } from '../types/mission'
 import { locations } from './locations'
 
 const moduleIdsByLocationId: Record<string, string[]> = {
+  'html-academy': webFoundationsModules.map((module) => module.id),
   'vue-city': [
     'vue-basics',
     'reactivity',
@@ -24,7 +25,7 @@ const locationIdByModuleId = Object.fromEntries(
   ),
 )
 
-export const missions: Mission[] = [...vueModules]
+export const missions: Mission[] = [...contentModules]
   .filter((module) => locationIdByModuleId[module.id])
   .sort((currentModule, nextModule) => currentModule.order - nextModule.order)
   .map((module) => {

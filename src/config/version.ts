@@ -1,9 +1,9 @@
 export const APP_VERSION = {
   major: 0,
-  minor: 2,
-  patch: 5,
+  minor: 3,
+  patch: 0,
   stage: 'alpha',
-  build: 4,
+  build: 5,
 } as const
 
 const formatStage = (stage: string): string => `${stage.charAt(0).toUpperCase()}${stage.slice(1)}`
