@@ -431,7 +431,7 @@ onUnmounted(() => {
     interviewLevel: 'junior',
     readingTime: '4 мин',
     whatIsIt:
-      'Таймеры — внешние browser APIs, которые продолжают работать независимо от Vue-компонента. setInterval и setTimeout не очищаются Vue автоматически. �?х нужно останавливать, если компонент больше не должен получать callback.',
+      'Таймеры — внешние browser APIs, которые продолжают работать независимо от Vue-компонента. setInterval и setTimeout не очищаются Vue автоматически. Их нужно останавливать, если компонент больше не должен получать callback.',
     whenToUse:
       'Таймеры применяют для polling, delayed UI, debounce-like эффектов и анимационных сценариев. Если таймер создаётся компонентом, cleanup обычно делается в onUnmounted. В KeepAlive иногда нужна пауза в onDeactivated.',
     howItWorks:
@@ -465,7 +465,7 @@ onUnmounted(() => window.clearInterval(intervalId))`,
     whatIsIt:
       'addEventListener добавляет внешний listener к DOM, window или document. Такой listener не исчезает автоматически из-за удаления Vue-компонента. Его нужно удалить через removeEventListener с той же функцией.',
     whenToUse:
-      'Глобальные listeners нужны для resize, scroll, keydown, click outside и интеграций. �?х стоит добавлять в onMounted, если нужен browser API, и удалять в onUnmounted. Для template events лучше использовать обычные Vue handlers.',
+      'Глобальные listeners нужны для resize, scroll, keydown, click outside и интеграций. Их стоит добавлять в onMounted, если нужен browser API, и удалять в onUnmounted. Для template events лучше использовать обычные Vue handlers.',
     howItWorks:
       'Handler сохраняют в переменной или объявляют именованной функцией. removeEventListener получает тот же target, event name и handler. Anonymous callback нельзя удалить, если ссылка потеряна.',
     whyImportant:
@@ -498,7 +498,7 @@ onUnmounted(() => window.removeEventListener('resize', onResize))`,
     whatIsIt:
       'Работа с DOM во Vue нужна для задач, которые нельзя удобно выразить декларативно: focus, измерения, scroll, integration с внешней библиотекой. Обычно она выполняется через template refs. DOM-зависимый код должен учитывать момент mount.',
     whenToUse:
-      '�?спользуй DOM-доступ точечно. Для классов, условий и текста лучше декларативный template. Если нужно измерить элемент, дождись onMounted или nextTick после обновления state.',
+      'Используй DOM-доступ точечно. Для классов, условий и текста лучше декларативный template. Если нужно измерить элемент, дождись onMounted или nextTick после обновления state.',
     howItWorks:
       'Template ref связывает переменную ref с DOM-элементом. После mount Vue записывает элемент в ref. При unmount значение очищается.',
     whyImportant:
@@ -845,15 +845,15 @@ onUnmounted(() => observer.disconnect())`,
     id: 'knowledge-lifecycle-q627',
     moduleId: 'lifecycle',
     questionId: 627,
-    title: '�?нтеграция DOM-библиотек',
+    title: 'Интеграция DOM-библиотек',
     category: 'DOM',
     rarity: 'rare',
     interviewLevel: 'middle',
     readingTime: '5 мин',
     whatIsIt:
-      '�?нтеграция DOM-библиотеки — подключение внешнего кода, которому нужен реальный DOM-элемент. Это могут быть charts, editors, maps, sliders или canvas-библиотеки. Vue должен отдать элемент через template ref после mount.',
+      'Интеграция DOM-библиотеки — подключение внешнего кода, которому нужен реальный DOM-элемент. Это могут быть charts, editors, maps, sliders или canvas-библиотеки. Vue должен отдать элемент через template ref после mount.',
     whenToUse:
-      'Такую интеграцию делают, когда библиотека не имеет native Vue-обёртки или нужен низкоуровневый контроль. �?нициализацию выполняют в onMounted, обновления синхронизируют через watch, cleanup делают в onUnmounted.',
+      'Такую интеграцию делают, когда библиотека не имеет native Vue-обёртки или нужен низкоуровневый контроль. Инициализацию выполняют в onMounted, обновления синхронизируют через watch, cleanup делают в onUnmounted.',
     howItWorks:
       'Компонент получает DOM ref, создаёт instance библиотеки и сохраняет ссылку. При изменении props можно вызвать update API библиотеки. При unmount нужно вызвать destroy/dispose/remove.',
     whyImportant:
@@ -873,7 +873,7 @@ onUnmounted(() => {
     },
     commonMistake:
       'Ошибка — инициализировать DOM-библиотеку в setup. Элемент ещё не существует, и библиотека получит null.',
-    interviewQuestions: createInterviewQuestions("�?нтеграция DOM-библиотек", "DOM"),
+    interviewQuestions: createInterviewQuestions("Интеграция DOM-библиотек", "DOM"),
     remember:
       'DOM-библиотека требует mount для init и unmount для destroy.',
   },
@@ -947,7 +947,7 @@ onMounted(() => steps.push('mounted'))`,
     interviewLevel: 'middle',
     readingTime: '5 мин',
     whatIsIt:
-      'Архитектура lifecycle effects — способ организовать side effects так, чтобы компонент оставался читаемым. Несвязанные listeners, timers, fetches и DOM-интеграции не должны лежать одной большой кучей. �?х лучше группировать по ответственности.',
+      'Архитектура lifecycle effects — способ организовать side effects так, чтобы компонент оставался читаемым. Несвязанные listeners, timers, fetches и DOM-интеграции не должны лежать одной большой кучей. Их лучше группировать по ответственности.',
     whenToUse:
       'Если компонент содержит несколько независимых lifecycle-сценариев, стоит выделить composables: useWindowSize, usePolling, useFocusTrap, useChart. Если эффект уникален и короткий, он может остаться в компоненте. Баланс важнее механической декомпозиции.',
     howItWorks:
