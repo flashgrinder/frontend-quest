@@ -5,6 +5,9 @@ export interface Location {
   worldId: string
   title: string
   description: string
+  motto: string
+  difficulty: string
+  futureProgress: string
   order: number
   missionIds: string[]
   status: MapNodeStatus

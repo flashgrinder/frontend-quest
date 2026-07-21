@@ -33,12 +33,22 @@ const completedMissionsCount = computed(() =>
   location.value ? getLocationCompletedMissions(location.value.id, gameStore.player.completedMissions).length : 0,
 )
 
-const isCurrentLocationUnlocked = computed(() =>
-  location.value ? isLocationUnlocked(location.value.id, gameStore.player.unlockedLocations) : false,
-)
+const isCurrentLocationUnlocked = computed(() => {
+  if (!location.value) {
+    return false
+  }
+
+  if (locationMissions.value.length === 0) {
+    return location.value.status !== 'locked'
+  }
+
+  return isLocationUnlocked(location.value.id, gameStore.player.unlockedLocations)
+})
 
 const isCurrentLocationCompleted = computed(() =>
-  location.value ? isLocationCompleted(location.value.id, gameStore.player.completedLocations) : false,
+  location.value && locationMissions.value.length > 0
+    ? isLocationCompleted(location.value.id, gameStore.player.completedLocations)
+    : false,
 )
 
 const getMissionStatus = (mission: Mission): 'locked' | 'unlocked' | 'current' | 'completed' => {
@@ -63,6 +73,22 @@ const statusVariant = (status: 'locked' | 'unlocked' | 'current' | 'completed') 
 
   return variants[status]
 }
+
+const locationStatus = computed<'locked' | 'unlocked' | 'current' | 'completed'>(() => {
+  if (!location.value) {
+    return 'locked'
+  }
+
+  if (isCurrentLocationCompleted.value) {
+    return 'completed'
+  }
+
+  if (locationMissions.value.length > 0 && isCurrentLocationUnlocked.value) {
+    return 'current'
+  }
+
+  return location.value.status
+})
 
 const handleMissionCardClick = (mission: Mission): void => {
   if (getMissionStatus(mission) === 'locked') {
@@ -106,14 +132,21 @@ const handleMissionCardClick = (mission: Mission): void => {
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div class="flex flex-wrap items-center gap-2">
-              <BaseBadge :variant="isCurrentLocationCompleted ? 'success' : 'warning'">
-                {{ isCurrentLocationCompleted ? 'completed' : 'current' }}
+              <BaseBadge :variant="statusVariant(locationStatus)">
+                {{ locationStatus }}
               </BaseBadge>
               <BaseBadge variant="neutral">{{ locationMissions.length }} missions</BaseBadge>
+              <BaseBadge variant="neutral">{{ location.difficulty }}</BaseBadge>
             </div>
 
             <h2 class="pixel-title mt-4 text-2xl text-white">{{ location.title }}</h2>
             <p class="mt-3 max-w-3xl text-base leading-7 text-slate-300">{{ location.description }}</p>
+            <p
+              class="mt-4 max-w-3xl border-l-2 pl-3 text-sm font-semibold leading-6 text-slate-200"
+              :style="{ borderColor: location.accentColor }"
+            >
+              {{ location.motto }}
+            </p>
           </div>
 
           <div
@@ -125,6 +158,12 @@ const handleMissionCardClick = (mission: Mission): void => {
         </div>
 
         <BaseProgress :value="completedMissionsCount" :max="Math.max(1, locationMissions.length)" label="Location Progress" />
+        <p
+          v-if="locationMissions.length === 0"
+          class="font-mono text-xs font-bold uppercase leading-5 tracking-[0.12em] text-[var(--color-muted)]"
+        >
+          {{ location.futureProgress }}
+        </p>
       </BaseCard>
 
       <div class="grid gap-3">
@@ -172,6 +211,14 @@ const handleMissionCardClick = (mission: Mission): void => {
 
             <BaseBadge v-else variant="neutral">Закрыто</BaseBadge>
           </div>
+        </BaseCard>
+
+        <BaseCard v-if="locationMissions.length === 0" class="grid gap-3 p-5">
+          <BaseBadge variant="warning">Planned Region</BaseBadge>
+          <h3 class="text-lg font-black text-white">Миссии появятся в следующих спринтах</h3>
+          <p class="text-sm leading-6 text-slate-300">
+            Эта локация уже закреплена в архитектуре мира. Вопросы, карточки знаний и награды будут добавляться отдельными задачами без переработки карты.
+          </p>
         </BaseCard>
       </div>
     </template>

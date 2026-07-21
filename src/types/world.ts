@@ -4,6 +4,7 @@ export interface World {
   id: string
   title: string
   description: string
+  motto: string
   order: number
   locationIds: string[]
   status: MapNodeStatus

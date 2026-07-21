@@ -29,6 +29,10 @@ const getWorldLocations = (world: World): Location[] =>
 const getLocationStatus = (location: Location): 'locked' | 'unlocked' | 'current' | 'completed' => {
   const locationMissions = missions.filter((mission) => mission.locationId === location.id)
 
+  if (locationMissions.length === 0) {
+    return location.status
+  }
+
   if (locationMissions.length > 0 && isLocationCompleted(location.id, gameStore.player.completedLocations)) {
     return 'completed'
   }
@@ -53,6 +57,8 @@ const getWorldProgressValue = (world: World): number =>
 
 const getWorldProgressMax = (world: World): number =>
   getWorldLocations(world).reduce((sum, location) => sum + getLocationProgressMax(location), 0)
+
+const hasWorldMissions = (world: World): boolean => getWorldProgressMax(world) > 0
 
 const getWorldStatus = (world: World): 'locked' | 'unlocked' | 'current' | 'completed' => {
   const worldLocations = getWorldLocations(world)
@@ -177,6 +183,9 @@ onUnmounted(() => {
 
             <h2 class="pixel-title mt-3 text-2xl text-white">{{ activeWorld.title }}</h2>
             <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-300">{{ activeWorld.description }}</p>
+            <p class="mt-3 max-w-3xl border-l-2 border-[var(--color-neon-green)] pl-3 text-sm font-semibold leading-6 text-[var(--color-neon-green)]">
+              {{ activeWorld.motto }}
+            </p>
           </div>
 
           <div
@@ -187,7 +196,19 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <BaseProgress :value="getWorldProgressValue(activeWorld)" :max="Math.max(1, getWorldProgressMax(activeWorld))" label="World Progress" />
+        <div class="grid gap-2">
+          <BaseProgress
+            :value="getWorldProgressValue(activeWorld)"
+            :max="Math.max(1, getWorldProgressMax(activeWorld))"
+            label="World Progress"
+          />
+          <p
+            v-if="!hasWorldMissions(activeWorld)"
+            class="font-mono text-xs font-bold uppercase tracking-[0.12em] text-[var(--color-muted)]"
+          >
+            {{ activeWorldLocations.length }} locations prepared · missions coming later
+          </p>
+        </div>
 
         <div class="grid gap-3 md:grid-cols-2">
           <template v-for="location in activeWorldLocations" :key="location.id">
@@ -204,6 +225,7 @@ onUnmounted(() => {
                 <div class="flex items-start justify-between gap-3">
                   <div class="min-w-0">
                     <BaseBadge :variant="statusVariant(getLocationStatus(location))">{{ getLocationStatus(location) }}</BaseBadge>
+                    <BaseBadge variant="neutral">{{ location.difficulty }}</BaseBadge>
                     <h3 class="mt-3 text-lg font-black text-white">{{ location.title }}</h3>
                   </div>
 
@@ -216,8 +238,11 @@ onUnmounted(() => {
                 </div>
 
                 <p class="text-sm leading-6 text-slate-300">{{ location.description }}</p>
+                <p class="border-l-2 pl-3 text-sm font-semibold leading-6 text-slate-200" :style="{ borderColor: location.accentColor }">
+                  {{ location.motto }}
+                </p>
 
-                <div class="grid gap-2">
+                <div v-if="getLocationProgressMax(location) > 0" class="grid gap-2">
                   <BaseProgress
                     :value="getLocationProgressValue(location)"
                     :max="Math.max(1, getLocationProgressMax(location))"
@@ -227,6 +252,9 @@ onUnmounted(() => {
                     {{ getLocationProgressValue(location) }} / {{ getLocationProgressMax(location) }} missions
                   </p>
                 </div>
+                <p v-else class="font-mono text-xs font-bold uppercase leading-5 tracking-[0.12em] text-[var(--color-muted)]">
+                  {{ location.futureProgress }}
+                </p>
               </BaseCard>
             </RouterLink>
 
@@ -234,6 +262,7 @@ onUnmounted(() => {
               <div class="flex items-start justify-between gap-3">
                 <div class="min-w-0">
                   <BaseBadge variant="neutral">locked</BaseBadge>
+                  <BaseBadge variant="neutral">{{ location.difficulty }}</BaseBadge>
                   <h3 class="mt-3 text-lg font-black text-white">{{ location.title }}</h3>
                 </div>
 
@@ -243,9 +272,12 @@ onUnmounted(() => {
               </div>
 
               <p class="text-sm leading-6 text-slate-400">{{ location.description }}</p>
+              <p class="border-l-2 border-slate-600 pl-3 text-sm font-semibold leading-6 text-slate-300">
+                {{ location.motto }}
+              </p>
 
               <p class="font-mono text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-                {{ getLocationProgressMax(location) }} missions
+                {{ getLocationProgressMax(location) > 0 ? `${getLocationProgressMax(location)} missions` : location.futureProgress }}
               </p>
             </BaseCard>
           </template>
