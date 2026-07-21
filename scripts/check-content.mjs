@@ -31,6 +31,37 @@ const readFiles = (name) =>
     .map((file) => readFileSync(file, 'utf8'))
     .join('\n')
 
+const htmlAcademyContentFiles = [
+  join('src', 'content', 'web-foundations', 'html-academy', 'metadata.ts'),
+  ...collectFiles(htmlAcademyAreasRoot, (filename) => ['missions.ts', 'questions.ts', 'knowledge.ts'].includes(filename)),
+]
+
+const findEncodingDamage = () =>
+  htmlAcademyContentFiles.flatMap((file) => {
+    const text = readFileSync(file, 'utf8')
+    const issues = []
+    const questionRun = text.match(/\?{3,}/)
+    const replacementSymbol = text.match(/\uFFFD/)
+
+    if (questionRun?.index !== undefined) {
+      issues.push({
+        file,
+        type: 'question-mark mojibake',
+        fragment: text.slice(Math.max(0, questionRun.index - 30), questionRun.index + 60).replace(/\s+/g, ' '),
+      })
+    }
+
+    if (replacementSymbol?.index !== undefined) {
+      issues.push({
+        file,
+        type: 'replacement character',
+        fragment: text.slice(Math.max(0, replacementSymbol.index - 30), replacementSymbol.index + 60).replace(/\s+/g, ' '),
+      })
+    }
+
+    return issues
+  })
+
 const getMatches = (text, pattern) => [...text.matchAll(pattern)].map((match) => match[1])
 const countBy = (items) =>
   items.reduce((accumulator, item) => {
@@ -68,6 +99,7 @@ const report = {
 }
 
 const problems = []
+const encodingDamage = findEncodingDamage()
 
 Object.entries(expected).forEach(([key, value]) => {
   if (report[key] !== value) {
@@ -79,6 +111,14 @@ if (report.duplicateMissionIds > 0) problems.push(`Duplicate mission ids: ${repo
 if (report.duplicateQuestionIds > 0) problems.push(`Duplicate question ids: ${report.duplicateQuestionIds}`)
 if (report.duplicateKnowledgeIds > 0) problems.push(`Duplicate knowledge ids: ${report.duplicateKnowledgeIds}`)
 if (report.duplicateQuestions > 0) problems.push(`Duplicate question texts: ${report.duplicateQuestions}`)
+if (encodingDamage.length > 0) {
+  problems.push(
+    `Suspicious encoding damage found: ${encodingDamage
+      .slice(0, 5)
+      .map((issue) => `${issue.file} (${issue.type}: "${issue.fragment}")`)
+      .join('; ')}`,
+  )
+}
 
 const expectedCorrectAnswers = expected.questions / 4
 const hasBalancedCorrectAnswers = ['a', 'b', 'c', 'd'].every(

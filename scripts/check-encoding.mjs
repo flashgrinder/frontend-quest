@@ -115,6 +115,36 @@ const createSnippet = (line, index) => {
   return line.slice(start, end)
 }
 
+const isNullishOperator = (line, index, length) => {
+  if (length !== 2) {
+    return false
+  }
+
+  const before = line.slice(0, index).trimEnd()
+  const after = line.slice(index + length).trimStart()
+
+  if (after.startsWith('=')) {
+    return true
+  }
+
+  return Boolean(before) && Boolean(after) && !after.startsWith('?')
+}
+
+const findSuspiciousQuestionRun = (line) => {
+  const questionRuns = line.matchAll(/\?{2,}/g)
+
+  for (const match of questionRuns) {
+    const index = match.index ?? 0
+    const value = match[0]
+
+    if (!isNullishOperator(line, index, value.length)) {
+      return { index, value }
+    }
+  }
+
+  return null
+}
+
 const checkFile = (filePath) => {
   const buffer = readFileSync(filePath)
   const file = formatPath(filePath)
@@ -147,6 +177,17 @@ const checkFile = (filePath) => {
         })
         break
       }
+    }
+
+    const suspiciousQuestionRun = findSuspiciousQuestionRun(line)
+
+    if (suspiciousQuestionRun) {
+      problems.push({
+        file,
+        reason: 'Possible question-mark mojibake',
+        line: lineIndex + 1,
+        snippet: createSnippet(line, suspiciousQuestionRun.index),
+      })
     }
   })
 }
