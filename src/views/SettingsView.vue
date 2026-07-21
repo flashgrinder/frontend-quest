@@ -3,6 +3,14 @@ import { useSettingsStore } from '../stores/settings'
 import { BaseBadge, BaseCard, BasePixelSwitch, BaseVolumeSlider } from '../components/ui'
 
 const settingsStore = useSettingsStore()
+
+const handleMusicVolumeInput = (value: number): void => {
+  settingsStore.setMusicVolume(value)
+}
+
+const handleSoundEffectsVolumeInput = (value: number): void => {
+  settingsStore.setSoundEffectsVolume(value)
+}
 </script>
 
 <template>
@@ -37,9 +45,10 @@ const settingsStore = useSettingsStore()
         </div>
 
         <BaseVolumeSlider
-          v-model="settingsStore.audio.musicVolume"
+          :model-value="settingsStore.audio.musicVolume"
           label="Громкость музыки"
           :disabled="!settingsStore.audio.musicEnabled"
+          @update:model-value="handleMusicVolumeInput"
         />
       </BaseCard>
 
@@ -65,9 +74,10 @@ const settingsStore = useSettingsStore()
         </div>
 
         <BaseVolumeSlider
-          v-model="settingsStore.audio.soundEffectsVolume"
+          :model-value="settingsStore.audio.soundEffectsVolume"
           label="Громкость эффектов"
           :disabled="!settingsStore.audio.soundEffectsEnabled"
+          @update:model-value="handleSoundEffectsVolumeInput"
         />
       </BaseCard>
     </div>

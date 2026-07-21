@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { BaseBadge, BaseCard, BasePixelSwitch, BaseVolumeSlider } from '../components/ui'
 import CharacterProfileForm from '../features/character/components/CharacterProfileForm.vue'
 import { useProfileStore } from '../stores/profile'
+import { useSettingsStore } from '../stores/settings'
 import type { AvatarPreset } from '../types/profile'
 
 const router = useRouter()
 const profileStore = useProfileStore()
+const settingsStore = useSettingsStore()
 const isSaved = ref(false)
 
 const pageTitle = computed(() => (profileStore.isProfileCreated ? 'Редактирование персонажа' : 'Создание персонажа'))
 const submitLabel = computed(() => (profileStore.isProfileCreated ? 'Сохранить персонажа' : 'Начать приключение'))
+
+const handleMusicVolumeInput = (value: number): void => {
+  settingsStore.setMusicVolume(value)
+}
 
 const saveProfile = (payload: { nickname: string; avatar: AvatarPreset }): void => {
   profileStore.saveProfile(payload.nickname, payload.avatar.id)
@@ -34,6 +41,36 @@ const saveProfile = (payload: { nickname: string; avatar: AvatarPreset }): void 
           Выбери имя и пиксельный образ героя. Все аватары доступны сразу и бесплатно.
         </p>
       </div>
+
+      <BaseCard class="grid gap-4 p-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 class="font-mono text-sm font-black uppercase tracking-[0.14em] text-white">
+              Музыка
+            </h2>
+            <BaseBadge :variant="settingsStore.audio.musicEnabled ? 'success' : 'neutral'">
+              {{ settingsStore.audio.musicEnabled ? 'Включена' : 'Выключена' }}
+            </BaseBadge>
+          </div>
+          <p class="mt-1 text-sm leading-6 text-slate-300">
+            Фоновая музыка приложения.
+          </p>
+        </div>
+
+        <BasePixelSwitch
+          v-model="settingsStore.audio.musicEnabled"
+          class="justify-self-start sm:justify-self-end"
+          label="Музыка"
+        />
+
+        <BaseVolumeSlider
+          :model-value="settingsStore.audio.musicVolume"
+          class="sm:col-span-2"
+          label="Громкость музыки"
+          :disabled="!settingsStore.audio.musicEnabled"
+          @update:model-value="handleMusicVolumeInput"
+        />
+      </BaseCard>
 
       <CharacterProfileForm
         :initial-profile="profileStore.profile"

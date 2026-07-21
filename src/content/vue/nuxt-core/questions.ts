@@ -493,9 +493,9 @@ export const nuxtCoreQuestions: ContentQuestion[] = [
     ],
     question: "Разработчик считает, что generate всегда является заменой build для любого Nuxt-приложения. Что неверно?",
     answers: [
-      { id: "a", text: "build никогда не нужен в Nuxt." },
-      { id: "b", text: "generate используется только для установки зависимостей." },
-      { id: "c", text: "build создаёт только документацию." },
+      { id: "a", text: "build нужен только для приложений без файловой маршрутизации." },
+      { id: "b", text: "generate подходит для всех страниц с runtime server logic и персональными данными." },
+      { id: "c", text: "build и generate всегда создают одинаковый deployment artifact." },
       { id: "d", text: "generate относится к статической генерации и подходит не для каждого deployment-сценария." },
     ],
     correctAnswer: "d",

@@ -675,12 +675,12 @@ export const piniaQuestions: ContentQuestion[] = [
     question: "Что важно при тестировании Pinia store?",
     answers: [
       { id: "a", text: "Проверять state transitions и actions изолированно от DOM, мокая внешние API." },
-      { id: "b", text: "Тестировать только CSS-классы store." },
+      { id: "b", text: "Тестировать store только через полный e2e-сценарий без unit-проверок actions." },
       { id: "c", text: "Вызывать реальные production API в каждом unit test." },
-      { id: "d", text: "Отключать TypeScript перед тестами." },
+      { id: "d", text: "Проверять только начальное состояние и не трогать переходы после actions." },
     ],
     correctAnswer: "a",
-    explanation: "Store-тесты должны проверять переходы состояния, getters и actions без зависимости от DOM. Внешние API лучше мокать, чтобы тест был быстрым и детерминированным. Реальные API, CSS-классы и отключение TypeScript не дают надёжной проверки store-логики.",
+    explanation: "Store-тесты должны проверять переходы состояния, getters и actions без зависимости от DOM. Внешние API лучше мокать, чтобы тест был быстрым и детерминированным. Только e2e-проверки, реальные API или проверка одного initial state не дают достаточно надёжной обратной связи по store-логике.",
     knowledgeId: "pinia-1333",
   },
   {

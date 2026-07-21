@@ -33,8 +33,8 @@ const validationError = computed(() => {
     return 'Введите никнейм.'
   }
 
-  if (trimmedNickname.value.length < 3 || trimmedNickname.value.length > 20) {
-    return 'Никнейм должен быть от 3 до 20 символов.'
+  if (trimmedNickname.value.length < 2 || trimmedNickname.value.length > 20) {
+    return 'Никнейм должен содержать от 2 до 20 символов'
   }
 
   if (!/^[\p{L}\p{N}_ -]+$/u.test(trimmedNickname.value)) {
@@ -84,6 +84,7 @@ watch(
           id="character-nickname"
           v-model="nickname"
           type="text"
+          minlength="2"
           maxlength="20"
           class="border-2 border-[rgba(0,255,177,0.34)] bg-black px-4 py-3 text-base font-bold text-white outline-none transition placeholder:text-slate-600 focus:border-[var(--color-neon-green)] focus:shadow-[0_0_18px_rgba(0,255,177,0.24)]"
           placeholder="Например: Neon Coder"

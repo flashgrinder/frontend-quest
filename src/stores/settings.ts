@@ -7,7 +7,7 @@ const AUDIO_SETTINGS_STORAGE_KEY = 'frontend-quest:settings:audio'
 
 const createDefaultAudioSettings = (): AudioSettings => ({
   musicEnabled: true,
-  musicVolume: 1,
+  musicVolume: 0.4,
   soundEffectsEnabled: true,
   soundEffectsVolume: 1,
 })

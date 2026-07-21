@@ -223,13 +223,13 @@ export const compositionApiQuestions: ContentQuestion[] = [
     ],
     question: "Как в Composition API зарегистрировать код после монтирования компонента?",
     answers: [
-      { id: "a", text: "Создать метод mounted в CSS" },
-      { id: "b", text: "Вызвать defineProps после рендера" },
+      { id: "a", text: "Объявить mounted как метод внутри возвращаемого объекта setup" },
+      { id: "b", text: "Вызвать onUpdated и ожидать, что он сработает до первого mount" },
       { id: "c", text: "Вызвать onMounted внутри setup или script setup" },
-      { id: "d", text: "Изменить package.json" },
+      { id: "d", text: "Вызвать onMounted асинхронно после завершения setup-контекста" },
     ],
     correctAnswer: "c",
-    explanation: "Composition API использует lifecycle hooks как функции: onMounted, onUnmounted, onUpdated и другие. Их вызывают синхронно внутри setup-контекста. CSS, defineProps и package.json к lifecycle-регистрации не относятся.",
+    explanation: "Composition API использует lifecycle hooks как функции: onMounted, onUnmounted, onUpdated и другие. Их вызывают синхронно внутри setup-контекста. Options-style mounted в возвращаемом объекте setup не сработает, onUpdated относится к обновлениям, а асинхронная регистрация hook после setup-контекста нарушает правила lifecycle API.",
     knowledgeId: "knowledge-composition-api-q211",
   },
   {

@@ -73,12 +73,12 @@ const questionSeeds: QuestionSeed[] = [
     question: 'Когда useAsyncData обычно подходит лучше, чем useFetch?',
     correct: 'Когда данные получаются не простым URL-запросом, а через произвольную async-функцию или несколько источников.',
     distractors: [
-      'Когда нужно выполнить только CSS-анимацию.',
-      'Когда запрос должен всегда выполняться только после onMounted.',
-      'Когда требуется удалить payload из Nuxt полностью.',
+      'Когда нужен простой HTTP-запрос по URL без дополнительной async-логики.',
+      'Когда данные должны загружаться только после mount и не участвовать в SSR.',
+      'Когда результат не должен иметь key, cache и refresh-механику Nuxt.',
     ],
     explanation:
-      'useAsyncData принимает async handler и подходит для произвольной логики: repository call, агрегация нескольких запросов, вычисление server-side данных. useFetch удобнее для типичного HTTP-запроса по URL. CSS, onMounted-only поведение и удаление payload не объясняют назначение useAsyncData.',
+      'useAsyncData принимает async handler и подходит для произвольной логики: repository call, агрегация нескольких запросов, вычисление server-side данных. useFetch удобнее для типичного HTTP-запроса по URL. Client-only загрузка, отсутствие key/cache и простые URL-запросы не являются главным преимуществом useAsyncData.',
     knowledgeId: 'nuxt-data-fetching-1502',
   },
   {

@@ -11,7 +11,7 @@ import SidebarXp from './SidebarXp.vue'
 </script>
 
 <template>
-  <aside class="h-screen min-h-0 min-w-0 overflow-visible lg:sticky lg:top-5 lg:h-[calc(100vh-2.5rem)]">
+  <aside class="min-h-0 min-w-0 overflow-visible lg:sticky lg:top-5 lg:h-[calc(100dvh-2.5rem)] xl:top-6 xl:h-[calc(100dvh-3rem)]">
     <HeroTerminalFrame>
       <template #header>
         <SidebarHeader />

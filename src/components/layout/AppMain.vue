@@ -5,7 +5,7 @@ import { BaseCard } from '../ui'
 
 <template>
   <main class="min-w-0 py-0 lg:py-0">
-    <BaseCard class="min-h-[calc(100vh-1.5rem)] p-4 sm:p-5 lg:min-h-[calc(100vh-2.5rem)] lg:p-6 xl:p-7">
+    <BaseCard class="min-h-[calc(100dvh-1.5rem)] p-4 sm:min-h-[calc(100dvh-2rem)] sm:p-5 lg:min-h-[calc(100dvh-2.5rem)] lg:p-6 xl:min-h-[calc(100dvh-3rem)] xl:p-7">
       <div class="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-[rgba(0,255,177,0.22)] pb-4">
         <div>
           <p class="font-mono text-[0.68rem] font-bold uppercase tracking-[0.18em] text-[var(--color-neon-green)]">

@@ -3,8 +3,8 @@ import AppSidebar from './AppSidebar.vue'
 </script>
 
 <template>
-  <div class="scanline-overlay min-h-screen bg-[var(--fq-color-bg)] text-[var(--fq-color-text)]">
-    <div class="mx-auto grid min-h-screen w-full max-w-[1720px] grid-cols-1 gap-4 p-3 sm:p-4 lg:grid-cols-[380px_minmax(0,1fr)] lg:gap-5 lg:p-5 xl:gap-6 xl:p-6">
+  <div class="scanline-overlay min-h-[100dvh] bg-[var(--fq-color-bg)] text-[var(--fq-color-text)]">
+    <div class="mx-auto grid min-h-[100dvh] w-full max-w-[1720px] grid-cols-1 gap-4 p-3 sm:p-4 lg:grid-cols-[380px_minmax(0,1fr)] lg:gap-5 lg:p-5 xl:gap-6 xl:p-6">
       <AppSidebar />
 
       <slot />

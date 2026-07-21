@@ -51,6 +51,16 @@ export class MusicPlayer {
     this.audio?.pause()
   }
 
+  setVolume(volume: number): void {
+    if (!this.audio) {
+      return
+    }
+
+    this.cancelFade()
+    this.targetVolume = Math.min(1, Math.max(0, volume))
+    this.audio.volume = this.targetVolume
+  }
+
   fadeTo(volume: number, durationMs: number, pauseWhenSilent = false): void {
     if (!this.audio) {
       return

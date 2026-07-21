@@ -19,8 +19,24 @@ const safeValue = computed(() => Math.min(1, Math.max(0, props.modelValue)))
 const safePercent = computed(() => Math.round(safeValue.value * 100))
 
 const handleInput = (event: Event): void => {
-  if (event.target instanceof HTMLInputElement) {
-    emit('update:modelValue', Number(event.target.value) / 100)
+  if (event.currentTarget instanceof HTMLInputElement) {
+    emit('update:modelValue', Number(event.currentTarget.value) / 100)
+  }
+}
+
+const handleChange = (event: Event): void => {
+  handleInput(event)
+}
+
+const handlePointerDown = (event: PointerEvent): void => {
+  if (event.currentTarget instanceof HTMLInputElement) {
+    event.currentTarget.setPointerCapture(event.pointerId)
+  }
+}
+
+const releasePointerCapture = (event: PointerEvent): void => {
+  if (event.currentTarget instanceof HTMLInputElement && event.currentTarget.hasPointerCapture(event.pointerId)) {
+    event.currentTarget.releasePointerCapture(event.pointerId)
   }
 }
 </script>
@@ -43,6 +59,10 @@ const handleInput = (event: Event): void => {
       class="volume-slider__input"
       :style="{ '--volume-value': `${safePercent}%` }"
       @input="handleInput"
+      @change="handleChange"
+      @pointerdown="handlePointerDown"
+      @pointerup="releasePointerCapture"
+      @pointercancel="releasePointerCapture"
     >
   </label>
 </template>
@@ -51,6 +71,7 @@ const handleInput = (event: Event): void => {
 .volume-slider {
   display: grid;
   gap: 0.75rem;
+  overflow: visible;
 }
 
 .volume-slider__header {
@@ -67,14 +88,19 @@ const handleInput = (event: Event): void => {
 }
 
 .volume-slider__input {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  height: 1.1rem;
+  min-height: 2.25rem;
+  padding: 0;
   appearance: none;
+  touch-action: none;
   border: 2px solid rgba(0, 255, 177, 0.35);
   background:
     linear-gradient(90deg, var(--color-neon-green) var(--volume-value), rgba(255, 255, 255, 0.08) var(--volume-value)),
     #050009;
   cursor: pointer;
+  pointer-events: auto;
   box-shadow:
     2px 2px 0 rgba(94, 0, 255, 0.32),
     0 0 16px rgba(0, 255, 177, 0.12);
@@ -105,18 +131,30 @@ const handleInput = (event: Event): void => {
   width: 1rem;
   height: 1.55rem;
   appearance: none;
+  cursor: pointer;
   border: 2px solid var(--color-neon-pink);
   background: var(--color-black);
   box-shadow: 0 0 16px rgba(229, 0, 255, 0.7);
 }
 
+.volume-slider__input::-webkit-slider-runnable-track {
+  height: 100%;
+  cursor: pointer;
+}
+
 .volume-slider__input::-moz-range-thumb {
   width: 1rem;
   height: 1.55rem;
+  cursor: pointer;
   border: 2px solid var(--color-neon-pink);
   border-radius: 0;
   background: var(--color-black);
   box-shadow: 0 0 16px rgba(229, 0, 255, 0.7);
+}
+
+.volume-slider__input::-moz-range-track {
+  height: 100%;
+  cursor: pointer;
 }
 
 .volume-slider--disabled {

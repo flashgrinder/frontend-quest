@@ -31,7 +31,8 @@ export class MusicManager {
     this.volume = Math.min(1, Math.max(0, value))
 
     if (this.enabled && this.started) {
-      this.player.fadeTo(this.getTargetVolume(), MUSIC_FADE_IN_MS)
+      this.isFadingIn = false
+      this.player.setVolume(this.getTargetVolume())
     }
   }
 

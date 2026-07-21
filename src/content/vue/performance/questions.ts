@@ -527,10 +527,10 @@ export const performanceQuestions: ContentQuestion[] = [
     ],
     question: "Какие Web Vitals особенно важны для frontend performance?",
     answers: [
-      { id: "a", text: "Только количество Vue-компонентов." },
+      { id: "a", text: "Только размер JavaScript bundle без учёта UX-метрик." },
       { id: "b", text: "LCP, CLS и INP, потому что они отражают загрузку, стабильность layout и отзывчивость." },
-      { id: "c", text: "Только размер package.json." },
-      { id: "d", text: "Только число CSS-переменных." },
+      { id: "c", text: "Только TTFB, потому что клиентская отзывчивость не влияет на UX." },
+      { id: "d", text: "Только FPS анимаций, потому что загрузка страницы не относится к performance." },
     ],
     correctAnswer: "b",
     explanation: "LCP показывает крупный контент, CLS — сдвиги layout, INP — отзывчивость взаимодействий. Эти метрики помогают связать оптимизацию с пользовательским опытом.",

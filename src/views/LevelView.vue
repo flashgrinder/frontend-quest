@@ -9,6 +9,7 @@ import { getMissionLocation } from '../data/missions'
 import { questions } from '../data/questions'
 import { useGameStore } from '../stores/game'
 import type { Achievement } from '../types/achievement'
+import type { Question, QuestionOption } from '../types/question'
 import { isLevelCompleted, isLevelUnlocked } from '../utils/gameProgress'
 
 const route = useRoute()
@@ -25,6 +26,7 @@ const level = computed(() => levels.find((item) => item.id === levelId.value))
 const levelQuestions = computed(() => questions.filter((question) => question.levelId === levelId.value))
 
 const currentQuestionIndex = ref(0)
+const randomizedQuestions = ref<Question[]>([])
 const selectedOptionId = ref<string | undefined>()
 const correctAnswers = ref(0)
 const wrongAnswers = ref(0)
@@ -51,9 +53,9 @@ const isCurrentLevelCompleted = computed(() => {
   return isLevelCompleted(level.value.id, gameStore.player.completedLevels)
 })
 
-const totalQuestions = computed(() => levelQuestions.value.length)
+const totalQuestions = computed(() => randomizedQuestions.value.length)
 
-const currentQuestion = computed(() => levelQuestions.value[currentQuestionIndex.value])
+const currentQuestion = computed(() => randomizedQuestions.value[currentQuestionIndex.value])
 
 const currentQuestionNumber = computed(() => {
   if (totalQuestions.value === 0) {
@@ -83,7 +85,43 @@ const missionProgressValue = computed(() => {
 
 const levelRunStatus = computed(() => (isCurrentLevelCompleted.value ? 'Тренировка' : 'Впервые'))
 
+const optionIds = ['a', 'b', 'c', 'd']
+
+const shuffleOptions = (options: QuestionOption[]): QuestionOption[] => {
+  const shuffledOptions = [...options]
+
+  for (let index = shuffledOptions.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1))
+    const currentOption = shuffledOptions[index]
+    const swapOption = shuffledOptions[swapIndex]
+
+    if (currentOption && swapOption) {
+      shuffledOptions[index] = swapOption
+      shuffledOptions[swapIndex] = currentOption
+    }
+  }
+
+  return shuffledOptions
+}
+
+const createRandomizedQuestions = (): Question[] =>
+  levelQuestions.value.map((question) => {
+    const shuffledOptions = shuffleOptions(question.options)
+    const randomizedOptions = shuffledOptions.map((option, index) => ({
+      ...option,
+      id: optionIds[index] ?? option.id,
+    }))
+    const correctOptionIndex = shuffledOptions.findIndex((option) => option.id === question.correctOptionId)
+
+    return {
+      ...question,
+      options: randomizedOptions,
+      correctOptionId: optionIds[correctOptionIndex] ?? question.correctOptionId,
+    }
+  })
+
 const resetQuizState = (): void => {
+  randomizedQuestions.value = createRandomizedQuestions()
   currentQuestionIndex.value = 0
   selectedOptionId.value = undefined
   correctAnswers.value = 0
@@ -178,7 +216,7 @@ const goToNextQuestion = (): void => {
   selectedOptionId.value = undefined
 }
 
-watch(levelId, resetQuizState)
+watch(levelId, resetQuizState, { immediate: true })
 </script>
 
 <template>

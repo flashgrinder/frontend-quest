@@ -720,7 +720,7 @@ export const ssrHydrationQuestions: ContentQuestion[] = [
     question: "Что важно учитывать при данных, попадающих в Nuxt payload?",
     answers: [
       { id: "a", text: "Payload всегда приватен и недоступен браузеру." },
-      { id: "b", text: "Payload хранит только CSS." },
+      { id: "b", text: "Payload можно считать безопасным, если данные пришли из server-side composable." },
       { id: "c", text: "Payload сериализуется для клиента, поэтому не должен содержать секреты и лишние тяжёлые данные." },
       { id: "d", text: "Payload автоматически удаляет любые персональные поля." },
     ],

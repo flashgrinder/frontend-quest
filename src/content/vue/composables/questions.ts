@@ -98,12 +98,12 @@ export const composablesQuestions: ContentQuestion[] = [
     question: "Что обычно возвращает composable?",
     answers: [
       { id: "a", text: "Состояние, computed-значения и методы, которые нужны потребителю" },
-      { id: "b", text: "Только HTML-строку с template" },
-      { id: "c", text: "Всегда Vue-компонент" },
-      { id: "d", text: "Только CSS-классы" },
+      { id: "b", text: "Только внутренние refs без функций для управления состоянием" },
+      { id: "c", text: "Готовую разметку вместо reusable логики и состояния" },
+      { id: "d", text: "Только side effects, не возвращая публичный API потребителю" },
     ],
     correctAnswer: "a",
-    explanation: "Composable возвращает публичный API своей логики: refs, computed, функции команд, flags loading/error. Возвращать нужно только то, что действительно нужно потребителю. HTML и CSS обычно не являются задачей composable.",
+    explanation: "Composable возвращает публичный API своей логики: refs, computed, функции команд, flags loading/error. Возвращать нужно только то, что действительно нужно потребителю. Возврат разметки, отсутствие публичного API или только side effects делают composable сложнее переиспользовать и тестировать.",
     knowledgeId: "knowledge-composables-q705",
   },
   {
